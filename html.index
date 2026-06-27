@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+  <script>
+    let nome = prompt("👋 Bem-vindo! Digite o seu nome:");
+    let idade = Number(prompt("Olá, " + nome + "! Agora digite sua idade:"));
+
+    alert("🎉 Olá, " + nome + "! Seja muito bem-vindo(a)!");
+
+    if (idade < 18) {
+      let faltam = 18 - idade;
+      alert("Você tem " + idade + " anos e ainda é menor de idade.\nFaltam " + faltam + " ano(s) para você atingir a maioridade.");
+    } else {
+      alert("Você tem " + idade + " anos e já atingiu a maioridade! ✅");
+    }
+  </script>
+
+</body>
+</html>
