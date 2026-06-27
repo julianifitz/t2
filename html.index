@@ -1,20 +1,226 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bem-vindo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f1623;
+      font-family: 'Inter', sans-serif;
+      padding: 24px;
+    }
+
+    .card {
+      background: #1a2235;
+      border: 1px solid #2a3a55;
+      border-radius: 20px;
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+
+    .emoji {
+      font-size: 40px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: #e8edf5;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #6b7d99;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #8fa3c0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      background: #111827;
+      border: 1px solid #2a3a55;
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 15px;
+      color: #e8edf5;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 20px;
+    }
+
+    input::placeholder { color: #3d5070; }
+    input:focus { border-color: #4f7cf7; }
+
+    button {
+      width: 100%;
+      background: #4f7cf7;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover { background: #3d6ae0; }
+    button:active { transform: scale(0.98); }
+
+    .resultado {
+      display: none;
+      margin-top: 28px;
+      padding: 20px;
+      background: #111827;
+      border: 1px solid #2a3a55;
+      border-radius: 12px;
+    }
+
+    .resultado.maior { border-left: 4px solid #34d399; }
+    .resultado.menor { border-left: 4px solid #f59e0b; }
+
+    .resultado p {
+      font-size: 15px;
+      color: #c8d6ea;
+      line-height: 1.7;
+    }
+
+    .resultado p strong { color: #e8edf5; }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .tag.maior { background: #064e3b; color: #34d399; }
+    .tag.menor { background: #451a03; color: #f59e0b; }
+
+    .barra {
+      margin-top: 14px;
+      height: 6px;
+      background: #1f2d42;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .barra-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 1s ease;
+    }
+
+    .barra-fill.maior { background: #34d399; }
+    .barra-fill.menor { background: #f59e0b; }
+
+    .barra-label {
+      font-size: 12px;
+      color: #6b7d99;
+      margin-top: 6px;
+    }
+  </style>
+</head>
 <body>
 
-  <script>
-    let nome = prompt("👋 Bem-vindo! Digite o seu nome:");
-    let idade = Number(prompt("Olá, " + nome + "! Agora digite sua idade:"));
+<div class="card">
+  <span class="emoji">👋</span>
+  <h1>Olá! Seja bem-vindo.</h1>
+  <p class="subtitle">Preencha os campos abaixo para receber uma mensagem personalizada.</p>
 
-    alert("🎉 Olá, " + nome + "! Seja muito bem-vindo(a)!");
+  <label for="nome">Seu nome</label>
+  <input type="text" id="nome" placeholder="Ex: Maria" />
+
+  <label for="idade">Sua idade</label>
+  <input type="number" id="idade" placeholder="Ex: 16" min="0" max="120" />
+
+  <button onclick="mostrarResultado()">Ver mensagem</button>
+
+  <div class="resultado" id="resultado">
+    <span class="tag" id="tag"></span>
+    <p id="mensagem"></p>
+    <div class="barra"><div class="barra-fill" id="barra-fill"></div></div>
+    <p class="barra-label" id="barra-label"></p>
+  </div>
+</div>
+
+<script>
+  function mostrarResultado() {
+    const nome = document.getElementById('nome').value.trim();
+    const idade = Number(document.getElementById('idade').value);
+    const resultado = document.getElementById('resultado');
+    const tag = document.getElementById('tag');
+    const mensagem = document.getElementById('mensagem');
+    const barraFill = document.getElementById('barra-fill');
+    const barraLabel = document.getElementById('barra-label');
+
+    if (!nome || isNaN(idade) || idade <= 0) {
+      alert('Por favor, preencha seu nome e sua idade corretamente.');
+      return;
+    }
+
+    resultado.style.display = 'block';
 
     if (idade < 18) {
-      let faltam = 18 - idade;
-      alert("Você tem " + idade + " anos e ainda é menor de idade.\nFaltam " + faltam + " ano(s) para você atingir a maioridade.");
+      const faltam = 18 - idade;
+      const progresso = Math.round((idade / 18) * 100);
+
+      resultado.className = 'resultado menor';
+      tag.className = 'tag menor';
+      tag.textContent = 'Menor de idade';
+      mensagem.innerHTML = `Olá, <strong>${nome}</strong>! Você tem <strong>${idade} anos</strong> e ainda é menor de idade. Faltam <strong>${faltam} ano(s)</strong> para você atingir a maioridade.`;
+      barraFill.className = 'barra-fill menor';
+      barraFill.style.width = '0%';
+      setTimeout(() => barraFill.style.width = progresso + '%', 50);
+      barraLabel.textContent = `${progresso}% do caminho até os 18 anos`;
     } else {
-      alert("Você tem " + idade + " anos e já atingiu a maioridade! ✅");
+      resultado.className = 'resultado maior';
+      tag.className = 'tag maior';
+      tag.textContent = 'Maior de idade';
+      mensagem.innerHTML = `Olá, <strong>${nome}</strong>! Você tem <strong>${idade} anos</strong> e já atingiu a maioridade. Bem-vindo ao mundo adulto! 🎉`;
+      barraFill.className = 'barra-fill maior';
+      barraFill.style.width = '0%';
+      setTimeout(() => barraFill.style.width = '100%', 50);
+      barraLabel.textContent = 'Maioridade atingida!';
     }
-  </script>
+  }
+
+  document.getElementById('idade').addEventListener('keydown', e => {
+    if (e.key === 'Enter') mostrarResultado();
+  });
+</script>
 
 </body>
 </html>
